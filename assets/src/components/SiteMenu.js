@@ -10,7 +10,8 @@ import {
   Typography,
   Box,
   Link,
-  makeStyles
+  makeStyles,
+  Dialog
 } from "@material-ui/core"
 import NotificationIcon from "@material-ui/icons/Notifications"
 import FeedList from "./FeedList"
@@ -41,18 +42,40 @@ const useStyles = makeStyles(theme => ({
     "&:visited": {
       color: "#ffffff"
     }
+  },
+  iframe: {
+    [theme.breakpoints.down("xs")]: {
+      width: "300px"
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "400px"
+    },
+    [theme.breakpoints.up("md")]: { 
+      width: "500px"
+    },
+    [theme.breakpoints.up("lg")]: {
+      width: "600px"
+    },
+    height:"760px"
   }
 }))
 
 const SiteMenu = () => {
   const classes = useStyles()
   const [value, setValue] = useState("about")
-
-  const notificationDoc = `https://docs.google.com/forms/d/1oYSTa3QeAAG-G_eTxjabrXd264zVARId9tp2iBRWpFs/edit`
+  const [open, setOpen] = useState(false);
 
   const handleChange = (e, newValue) => {
     setValue(newValue)
   }
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Paper elevation={0} square>
@@ -80,26 +103,27 @@ const SiteMenu = () => {
         fullWidth={true}
         color="primary"
         className={classes.button}
+        onClick={handleClickOpen}
       >
         <Typography component="div">
           <Box zIndex={1}>
-            <Link
-              href={notificationDoc}
-              target="_blank"
-              rel="noopener"
-              rel="noreferrer"
+            <div
               color="inherit"
               variant="inherit"
               className={classes.link}
             >
               Get notified when there's whale activity
-            </Link>
+            </div>
           </Box>
         </Typography>
         <Box p={0.2}>
           <NotificationIcon />
         </Box>
       </Button>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSegvsTLoxOE1-kRsI6M4dQzDGtqI7YVPlHrMk91Zz_uyqjBTg/viewform?embedded=true"
+                className={classes.iframe}/>
+      </Dialog>
       <Tabs
         variant="fullWidth"
         centered
